@@ -34,7 +34,7 @@ This topic lists the Record Field Exchange (RFX, Bulk RFX, and DFX) functions us
 |[RFX_Binary](#rfx_binary)|Transfers arrays of bytes of type [CByteArray](cbytearray-class.md).|  
 |[RFX_Bool](#rfx_bool)|Transfers Boolean data.|  
 |[RFX_Byte](#rfx_byte)|Transfers a single byte of data.|  
-|[RFX_Date](#rfx_date)|Transfers time and date data using [CTime](../../atl-mfc-shared/reference/ctime-class.md) or TIMESTAMP_STRUCT.|  
+|[RFX_Date](#rfx_date)|Transfers time and date data using [CTime](../../atl-mfc-shared/reference/ctime-class.md), TIMESTAMP_STRUCT, or [COleDateTime](../../atl-mfc-shared/reference/coledatetime-class.md).|  
 |[RFX_Double](#rfx_double)|Transfers double-precision float data.|  
 |[RFX_Int](#rfx_int)|Transfers integer data.|  
 |[RFX_Long](#rfx_long)|Transfers long integer data.|  
@@ -166,7 +166,7 @@ void RFX_Byte(
  **Header:** afxdb.h  
 
 ## <a name="rfx_date"></a>  RFX_Date
-Transfers `CTime` or TIMESTAMP_STRUCT data between the field data members of a `CRecordset` object and the columns of a record on the data source of ODBC type SQL_DATE, SQL_TIME, or SQL_TIMESTAMP.  
+Transfers `CTime`, TIMESTAMP_STRUCT, or `COleDateTime` data between the field data members of a `CRecordset` object and the columns of a record on the data source of ODBC type SQL_TYPE_DATE, SQL_TYPE_TIME, or SQL_TYPE_TIMESTAMP.  
   
 ### Syntax  
   
@@ -199,10 +199,13 @@ void RFX_Date(
   
  The first version of the function takes a reference to a [CTime](../../atl-mfc-shared/reference/ctime-class.md) object. For a transfer from recordset to data source, this value is taken from the specified data member. For a transfer from data source to recordset, the value is stored in the specified data member.  
   
- The second version of the function takes a reference to a `TIMESTAMP_STRUCT` structure. You must set up this structure yourself before the call. Neither dialog data exchange (DDX) support nor code wizard support is available for this version. The third version of the function works similarly to the first version except that it takes a reference to a [COleDateTime](../../atl-mfc-shared/reference/coledatetime-class.md) object.  
+ The second version of the function takes a reference to a `TIMESTAMP_STRUCT` structure. You must set up this structure yourself before the call. Neither dialog data exchange (DDX) support nor code wizard support is available for this version.
+ 
+ The third version of the function works similarly to the first version except that it takes a reference to a [COleDateTime](../../atl-mfc-shared/reference/coledatetime-class.md) object.  
   
 ### Remarks  
- The `CTime` version of the function imposes the overhead of some intermediate processing and has a somewhat limited range. If you find either of these factors too limiting, use the second version of the function. But note its lack of code wizard and DDX support and the requirement that you set up the structure yourself.  
+ The `CTime` version of the function imposes the overhead of some intermediate processing and has a somewhat limited range. If you find either of these factors too limiting, use the second version of the function. But note its lack of code wizard and DDX support and the requirement that you set up the structure yourself.
+ When binding to columns of SQL_TYPE_DATE, only the date portion of the variable is expected to be non-zero.  The ODBC driver may reject the transfer if the time portion is non-zero.  Similarly, only the time portion is expected to be non-zero when binding to a SQL_TYPE_TIME column. The `COleDateTime` class has SetDate(../../atl-mfc-shared/reference/coledatetime-class.md#setdate) and SetTime(../../atl-mfc-shared/reference/coledatetime-class.md#settime) members to facilitate setting only the required portions.
   
 ### Example  
  See [RFX_Text](#rfx_text).  
