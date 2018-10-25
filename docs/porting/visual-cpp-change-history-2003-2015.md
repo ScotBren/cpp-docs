@@ -3307,8 +3307,6 @@ The `SchedulerType` enumeration of `UmsThreadDefault` is deprecated. Specificati
   
 ### MFC  
   
-- `CTime` Class: The `CTime` class now accepts dates starting from 1/1/1900 C.E. instead of 1/1/1970 C.E.              
-
 - Tab order of controls in MFC dialogs: The correct tab order of multiple controls in an MFC dialog is disturbed if an MFC ActiveX control is inserted in the tab order. This change corrects that problem.  
   
      For example, create an MFC dialog application that has an ActiveX control and several edit controls. Position the ActiveX control in the middle of the tab order of the edit controls. Start the application, click an edit control whose tab order is after the ActiveX control, then tab. Prior to this change, the focus went to the edit control following the ActiveX control instead of the next edit control in the tab order.  
